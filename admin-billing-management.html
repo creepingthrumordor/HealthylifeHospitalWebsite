@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing Management - Healthylife</title>
+    <link rel="stylesheet" href="styles.css?v=3">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="admin-dashboard.php">Dashboard</a></li>
+                <li><a href="admin-doctor-management.html">Doctors</a></li>
+                <li><a href="admin-staff-directory.php">Staff</a></li>
+                <li><a href="admin-billing-management.html">Billing</a></li>
+                <li><a href="admin-patient-records.html">Patients</a></li>
+                <li><a href="logout.php">Logout</a></li>
+            </ul>
+            <a href="index.html" class="logo"><img src="logo.png" alt="Healthylife"
+                    style="height: 40px; vertical-align: middle; margin-right: 8px;">Healthylife</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 style="margin-bottom: 2rem;">Billing Management</h1>
+
+        <div class="dashboard-grid">
+            <div class="stat-card">
+                <h3>Total Revenue (This Month)</h3>
+                <div class="stat-value">LKR 125,000</div>
+            </div>
+            <div class="stat-card">
+                <h3>Pending Payments</h3>
+                <div class="stat-value">LKR 45,000</div>
+            </div>
+            <div class="stat-card">
+                <h3>Paid This Month</h3>
+                <div class="stat-value">LKR 80,000</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Invoices</h3>
+                <div class="stat-value">156</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>All Bills & Payments</h2>
+            </div>
+            <div style="margin-bottom: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                <select style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 6px;">
+                    <option value="">All Status</option>
+                    <option value="paid">Paid</option>
+                    <option value="pending">Pending</option>
+                    <option value="overdue">Overdue</option>
+                </select>
+                <input type="date" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 6px;">
+                <input type="text" placeholder="Search patient..."
+                    style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 6px; flex: 1; min-width: 200px;">
+                <button class="btn btn-primary">Search</button>
+                <button class="btn btn-secondary">Generate Monthly Report</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bill ID</th>
+                            <th>Date</th>
+                            <th>Patient Name</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Payment Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>BILL-2024-001</td>
+                            <td>2024-03-10</td>
+                            <td>John Doe</td>
+                            <td>Consultation & Blood Test</td>
+                            <td>LKR 250</td>
+                            <td><span style="color: var(--warning-color);">Pending</span></td>
+                            <td>-</td>
+                            <td>
+                                <button class="btn btn-primary"
+                                    style="padding: 0.5rem 1rem; margin-right: 0.5rem;">Update Status</button>
+                                <button class="btn btn-outline" style="padding: 0.5rem 1rem;">View</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>BILL-2024-002</td>
+                            <td>2024-03-08</td>
+                            <td>Jane Smith</td>
+                            <td>X-Ray Examination</td>
+                            <td>LKR 200</td>
+                            <td><span style="color: var(--warning-color);">Pending</span></td>
+                            <td>-</td>
+                            <td>
+                                <button class="btn btn-primary"
+                                    style="padding: 0.5rem 1rem; margin-right: 0.5rem;">Update Status</button>
+                                <button class="btn btn-outline" style="padding: 0.5rem 1rem;">View</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>BILL-2024-003</td>
+                            <td>2024-03-05</td>
+                            <td>Robert Johnson</td>
+                            <td>CT Scan</td>
+                            <td>LKR 500</td>
+                            <td><span style="color: var(--secondary-color);">Paid</span></td>
+                            <td>2024-03-06</td>
+                            <td>
+                                <button class="btn btn-outline" style="padding: 0.5rem 1rem;">View Receipt</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>BILL-2024-004</td>
+                            <td>2024-02-28</td>
+                            <td>Emily Brown</td>
+                            <td>General Consultation</td>
+                            <td>LKR 150</td>
+                            <td><span style="color: var(--danger-color);">Overdue</span></td>
+                            <td>-</td>
+                            <td>
+                                <button class="btn btn-danger" style="padding: 0.5rem 1rem; margin-right: 0.5rem;">Mark
+                                    Paid</button>
+                                <button class="btn btn-outline" style="padding: 0.5rem 1rem;">View</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Update Payment Status</h2>
+            </div>
+            <form>
+                <div class="form-group">
+                    <label for="billId">Bill ID</label>
+                    <input type="text" id="billId" name="billId" placeholder="Enter Bill ID" required>
+                </div>
+                <div class="form-group">
+                    <label for="paymentStatus">Payment Status</label>
+                    <select id="paymentStatus" name="paymentStatus" required>
+                        <option value="">Select Status</option>
+                        <option value="paid">Paid</option>
+                        <option value="pending">Pending</option>
+                        <option value="overdue">Overdue</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="paymentDate">Payment Date</label>
+                    <input type="date" id="paymentDate" name="paymentDate">
+                </div>
+                <button type="submit" class="btn btn-primary">Update Status</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 HealthyLife. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

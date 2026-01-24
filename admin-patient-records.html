@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Records Management - Healthylife</title>
+    <link rel="stylesheet" href="styles.css?v=3">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="admin-dashboard.php">Dashboard</a></li>
+                <li><a href="admin-doctor-management.html">Doctors</a></li>
+                <li><a href="admin-staff-directory.php">Staff</a></li>
+                <li><a href="admin-billing-management.html">Billing</a></li>
+                <li><a href="admin-patient-records.html">Patients</a></li>
+                <li><a href="logout.php">Logout</a></li>
+            </ul>
+            <a href="index.html" class="logo"><img src="logo.png" alt="Healthylife"
+                    style="height: 40px; vertical-align: middle; margin-right: 8px;">Healthylife</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 style="margin-bottom: 2rem;">Patient Records Management</h1>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>All Registered Patients</h2>
+            </div>
+            <div style="margin-bottom: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                <input type="text" placeholder="Search by name, ID, or email..."
+                    style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 6px; flex: 1; min-width: 300px;">
+                <select style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 6px;">
+                    <option value="">All Patients</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+                <button class="btn btn-primary">Search</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Patient ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Date of Birth</th>
+                            <th>Gender</th>
+                            <th>Registration Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>PAT-001</td>
+                            <td>John Doe</td>
+                            <td>john.doe@email.com</td>
+                            <td>+1 234-567-8900</td>
+                            <td>1985-05-15</td>
+                            <td>Male</td>
+                            <td>2023-01-10</td>
+                            <td>
+                                <button class="btn btn-outline" style="padding: 0.5rem 1rem; margin-right: 0.5rem;">View
+                                    Details</button>
+                                <button class="btn btn-primary" style="padding: 0.5rem 1rem;">Edit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>PAT-002</td>
+                            <td>Jane Smith</td>
+                            <td>jane.smith@email.com</td>
+                            <td>+1 234-567-8901</td>
+                            <td>1990-08-22</td>
+                            <td>Female</td>
+                            <td>2023-02-15</td>
+                            <td>
+                                <button class="btn btn-outline" style="padding: 0.5rem 1rem; margin-right: 0.5rem;">View
+                                    Details</button>
+                                <button class="btn btn-primary" style="padding: 0.5rem 1rem;">Edit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>PAT-003</td>
+                            <td>Robert Johnson</td>
+                            <td>robert.johnson@email.com</td>
+                            <td>+1 234-567-8902</td>
+                            <td>1978-12-03</td>
+                            <td>Male</td>
+                            <td>2023-03-20</td>
+                            <td>
+                                <button class="btn btn-outline" style="padding: 0.5rem 1rem; margin-right: 0.5rem;">View
+                                    Details</button>
+                                <button class="btn btn-primary" style="padding: 0.5rem 1rem;">Edit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>PAT-004</td>
+                            <td>Emily Brown</td>
+                            <td>emily.brown@email.com</td>
+                            <td>+1 234-567-8903</td>
+                            <td>1992-04-18</td>
+                            <td>Female</td>
+                            <td>2023-04-05</td>
+                            <td>
+                                <button class="btn btn-outline" style="padding: 0.5rem 1rem; margin-right: 0.5rem;">View
+                                    Details</button>
+                                <button class="btn btn-primary" style="padding: 0.5rem 1rem;">Edit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>PAT-005</td>
+                            <td>Michael Davis</td>
+                            <td>michael.davis@email.com</td>
+                            <td>+1 234-567-8904</td>
+                            <td>1988-09-25</td>
+                            <td>Male</td>
+                            <td>2023-05-12</td>
+                            <td>
+                                <button class="btn btn-outline" style="padding: 0.5rem 1rem; margin-right: 0.5rem;">View
+                                    Details</button>
+                                <button class="btn btn-primary" style="padding: 0.5rem 1rem;">Edit</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Patient Statistics</h2>
+            </div>
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <h3>Total Patients</h3>
+                    <div class="stat-value">1,234</div>
+                </div>
+                <div class="stat-card">
+                    <h3>New This Month</h3>
+                    <div class="stat-value">45</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Patients</h3>
+                    <div class="stat-value">987</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Average Age</h3>
+                    <div class="stat-value">42</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 HealthyLife. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
