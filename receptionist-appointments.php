@@ -111,14 +111,21 @@ $appointments = $stmt->fetchAll();
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <ul class="nav-links">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Healthylife" style="height: 40px; vertical-align: middle; margin-right: 8px;">Healthylife
+            </a>
+            <button class="menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="nav-links">
                 <li><a href="receptionist-dashboard.php">Dashboard</a></li>
                 <li><a href="receptionist-appointments.php">Appointments</a></li>
                 <li><a href="receptionist-billing.php">Billing</a></li>
                 <li><a href="receptionist-inquiries.php">Inquiries</a></li>
                 <li><a href="logout.php">Logout</a></li>
             </ul>
-            <a href="index.html" class="logo"><img src="logo.png" alt="Healthylife" style="height: 40px; vertical-align: middle; margin-right: 8px;">Healthylife</a>
         </div>
     </nav>
 
@@ -226,7 +233,7 @@ $appointments = $stmt->fetchAll();
                     <label for="appointmentId">Appointment ID</label>
                     <input type="text" id="appointmentId" name="appointmentId" readonly required>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="grid-2">
                     <div class="form-group">
                         <label for="editDate">Date</label>
                         <input type="date" id="editDate" name="editDate" required>
@@ -251,7 +258,15 @@ $appointments = $stmt->fetchAll();
     </div>
 
     <footer>
-        <p>© 2025 HealthyLife. All rights reserved.</p>
+        <p>© 2026 HealthyLife. All rights reserved.</p>
     </footer>
+
+    <script>
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.getElementById('nav-links').classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
+

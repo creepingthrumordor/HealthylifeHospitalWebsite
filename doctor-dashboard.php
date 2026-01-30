@@ -81,12 +81,19 @@ try {
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <ul class="nav-links">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Healthylife" style="height: 40px; vertical-align: middle; margin-right: 8px;">Healthylife
+            </a>
+            <button class="menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="nav-links">
                 <li><a href="doctor-dashboard.php">Dashboard</a></li>
                 <li><a href="doctor-upload-report.php">Upload Reports</a></li>
                 <li><a href="logout.php">Logout</a></li>
             </ul>
-            <a href="index.html" class="logo"><img src="logo.png" alt="Healthylife" style="height: 40px; vertical-align: middle; margin-right: 8px;">Healthylife</a>
         </div>
     </nav>
 
@@ -150,7 +157,22 @@ try {
                                         <span style="color: <?php echo $color; ?>;"><?php echo ucfirst($st); ?></span>
                                     </td>
                                     <td>
-                                        <a href="doctor-upload-report.php?appointment_id=<?php echo $appt['appointment_id']; ?>" class="btn btn-primary" style="padding: 0.5rem 1rem;">Upload Report</a>
+                                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                            <a href="doctor-upload-report.php?appointment_id=<?php echo $appt['appointment_id']; ?>" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Upload Report</a>
+                                            
+                                            <?php if (!in_array(strtolower($appt['status']), ['completed', 'cancelled'])): ?>
+                                                <form action="doctor-update-status.php" method="POST" style="display: inline;">
+                                                    <input type="hidden" name="appointment_id" value="<?php echo $appt['appointment_id']; ?>">
+                                                    <input type="hidden" name="status" value="completed">
+                                                    <button type="submit" class="btn" style="background-color: var(--secondary-color); color: white; padding: 0.5rem 1rem; font-size: 0.8rem; border: none; cursor: pointer;">Complete</button>
+                                                </form>
+                                                <form action="doctor-update-status.php" method="POST" style="display: inline;">
+                                                    <input type="hidden" name="appointment_id" value="<?php echo $appt['appointment_id']; ?>">
+                                                    <input type="hidden" name="status" value="cancelled">
+                                                    <button type="submit" class="btn" style="background-color: var(--danger-color); color: white; padding: 0.5rem 1rem; font-size: 0.8rem; border: none; cursor: pointer;" onclick="return confirm('Are you sure you want to cancel this appointment?');">Cancel</button>
+                                                </form>
+                                            <?php endif; ?>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -168,14 +190,20 @@ try {
             </div>
             <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                 <a href="doctor-upload-report.php" class="btn btn-primary">Upload Test Results</a>
-                <button class="btn btn-secondary">View Patient History</button>
-                <button class="btn btn-outline">Update Schedule</button>
+                <a href="doctor-update-schedule.php" class="btn btn-outline">Update Schedule</a>
             </div>
         </div>
     </div>
 
     <footer>
-        <p>© 2025 HealthyLife. All rights reserved.</p>
+        <p>© 2026 HealthyLife. All rights reserved.</p>
     </footer>
+
+    <script>
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.getElementById('nav-links').classList.toggle('active');
+        });
+    </script>
 </body>
 </html>

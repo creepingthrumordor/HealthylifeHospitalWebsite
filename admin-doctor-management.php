@@ -10,8 +10,48 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
+
 $doc_success = '';
 $doc_error   = '';
+
+// Initialize edit variables
+$e_id = '';
+$e_name = '';
+$e_email = '';
+$e_phone = '';
+$e_spec = '';
+$e_dept = '';
+$e_exp = '';
+$e_sch = '';
+$e_avail = 'available';
+
+if (isset($_GET['editDoctor'])) {
+    $id = (int)$_GET['editDoctor'];
+    try {
+        $stmt = $pdo->prepare("
+            SELECT d.*, u.full_name 
+            FROM doctors d 
+            JOIN users u ON d.user_id = u.user_id 
+            WHERE d.doctor_id = ?
+        ");
+        $stmt->execute([$id]);
+        $editDoc = $stmt->fetch();
+        
+        if ($editDoc) {
+            $e_id = $editDoc['doctor_id'];
+            $e_name = $editDoc['full_name'];
+            $e_email = $editDoc['email'];
+            $e_phone = $editDoc['phone'];
+            $e_spec = $editDoc['specialization'];
+            $e_dept = $editDoc['department_name'];
+            $e_exp = $editDoc['experience_years'];
+            $e_sch = $editDoc['schedule_text'];
+            $e_avail = $editDoc['availability'];
+        }
+    } catch (Exception $e) {
+        $doc_error = "Error fetching doctor data: " . $e->getMessage();
+    }
+}
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['formType']) && $_POST['formType'] === 'doctor-form') {
@@ -24,12 +64,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['formType']) && $_POST
     $exp        = (int)($_POST['doctorExperience'] ?? 0);
     $schedule   = trim($_POST['doctorSchedule'] ?? '');
     $avail      = $_POST['doctorAvailability'] ?? 'available';
+    $password   = $_POST['doctorPassword'] ?? '';
 
     if ($name && $email && $phone && $spec && $dept && $schedule) {
         try {
             if ($doctorId === '') {
-
-                $password = bin2hex(random_bytes(4));
+                if (empty($password)) {
+                    throw new Exception("Password is required for new doctors.");
+                }
                 $hash     = password_hash($password, PASSWORD_DEFAULT);
 
                 $pdo->beginTransaction();
@@ -65,6 +107,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['formType']) && $_POST
                 );
                 $stmt->execute([$email, $phone, $spec, $dept, $exp, $schedule, $avail, $doctorId]);
                 $doc_success = 'Doctor updated successfully.';
+                if (!empty($password)) {
+                    // Update password if provided
+                    $hash = password_hash($password, PASSWORD_DEFAULT);
+                    $stmt = $pdo->prepare("UPDATE users SET password_hash = ?, password_plain = ? WHERE user_id = (SELECT user_id FROM doctors WHERE doctor_id = ?)");
+                    $stmt->execute([$hash, $password, $doctorId]);
+                    $doc_success = 'Doctor and password updated successfully.';
+                }
             }
         } catch (Exception $e) {
             if ($pdo->inTransaction()) $pdo->rollBack();
@@ -84,6 +133,11 @@ if (isset($_GET['deleteDoctor'])) {
         $doc = $stmt->fetch();
 
         $pdo->beginTransaction();
+        
+        // Remove associated records first to avoid foreign key constraints
+        $pdo->prepare("DELETE FROM appointments WHERE doctor_id = ?")->execute([$id]);
+        $pdo->prepare("DELETE FROM medical_reports WHERE doctor_id = ?")->execute([$id]);
+        
         $pdo->prepare("DELETE FROM doctors WHERE doctor_id = ?")->execute([$id]);
         if ($doc) {
             $pdo->prepare("DELETE FROM users WHERE user_id = ?")->execute([$doc['user_id']]);
@@ -116,7 +170,15 @@ $doctors = $stmt->fetchAll();
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <ul class="nav-links">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Healthylife" style="height: 40px; vertical-align: middle; margin-right: 8px;">Healthylife
+            </a>
+            <button class="menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="nav-links">
                 <li><a href="admin-dashboard.php">Dashboard</a></li>
                 <li><a href="admin-doctor-management.php">Doctors</a></li>
                 <li><a href="admin-staff-directory.php">Staff</a></li>
@@ -124,7 +186,6 @@ $doctors = $stmt->fetchAll();
                 <li><a href="admin-patient-records.php">Patients</a></li>
                 <li><a href="logout.php">Logout</a></li>
             </ul>
-            <a href="index.html" class="logo"><img src="logo.png" alt="Healthylife" style="height: 40px; vertical-align: middle; margin-right: 8px;">Healthylife</a>
         </div>
     </nav>
 
@@ -133,7 +194,7 @@ $doctors = $stmt->fetchAll();
 
         <div class="card">
             <div class="card-header">
-                <h2>Add New Doctor</h2>
+                <h2><?php echo $e_id ? 'Edit Doctor' : 'Add New Doctor'; ?></h2>
             </div>
 
             <?php if (!empty($doc_error)): ?>
@@ -151,58 +212,62 @@ $doctors = $stmt->fetchAll();
             <div style="padding: 1.5rem;">
             <form method="POST" action="admin-doctor-management.php">
                 <input type="hidden" name="formType" value="doctor-form">
-                <input type="hidden" name="doctorId" id="doctorId">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <input type="hidden" name="doctorId" id="doctorId" value="<?php echo htmlspecialchars($e_id); ?>">
+                <div class="grid-2">
                     <div class="form-group">
                         <label for="doctorName">Full Name</label>
-                        <input type="text" id="doctorName" name="doctorName" required>
+                        <input type="text" id="doctorName" name="doctorName" value="<?php echo htmlspecialchars($e_name); ?>" required>
                     </div>
                     <div class="form-group">
                         <label for="doctorEmail">Email</label>
-                        <input type="email" id="doctorEmail" name="doctorEmail" required>
+                        <input type="email" id="doctorEmail" name="doctorEmail" value="<?php echo htmlspecialchars($e_email); ?>" required>
                     </div>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="grid-2">
                     <div class="form-group">
                         <label for="doctorPhone">Phone</label>
-                        <input type="tel" id="doctorPhone" name="doctorPhone" required>
+                        <input type="tel" id="doctorPhone" name="doctorPhone" value="<?php echo htmlspecialchars($e_phone); ?>" required>
                     </div>
                     <div class="form-group">
                         <label for="doctorSpecialization">Specialization</label>
                         <select id="doctorSpecialization" name="doctorSpecialization" required>
                             <option value="">Select Specialization</option>
-                            <option value="cardiology">Cardiology</option>
-                            <option value="neurology">Neurology</option>
-                            <option value="orthopedics">Orthopedics</option>
-                            <option value="dermatology">Dermatology</option>
-                            <option value="pediatrics">Pediatrics</option>
-                            <option value="general">General Medicine</option>
+                            <option value="cardiology" <?php echo $e_spec === 'cardiology' ? 'selected' : ''; ?>>Cardiology</option>
+                            <option value="neurology" <?php echo $e_spec === 'neurology' ? 'selected' : ''; ?>>Neurology</option>
+                            <option value="orthopedics" <?php echo $e_spec === 'orthopedics' ? 'selected' : ''; ?>>Orthopedics</option>
+                            <option value="dermatology" <?php echo $e_spec === 'dermatology' ? 'selected' : ''; ?>>Dermatology</option>
+                            <option value="pediatrics" <?php echo $e_spec === 'pediatrics' ? 'selected' : ''; ?>>Pediatrics</option>
+                            <option value="general" <?php echo $e_spec === 'general' ? 'selected' : ''; ?>>General Medicine</option>
                         </select>
                     </div>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="grid-2">
                     <div class="form-group">
                         <label for="doctorDepartment">Department</label>
-                        <input type="text" id="doctorDepartment" name="doctorDepartment" required>
+                        <input type="text" id="doctorDepartment" name="doctorDepartment" value="<?php echo htmlspecialchars($e_dept); ?>" required>
                     </div>
                     <div class="form-group">
                         <label for="doctorExperience">Years of Experience</label>
-                        <input type="number" id="doctorExperience" name="doctorExperience" min="0" required>
+                        <input type="number" id="doctorExperience" name="doctorExperience" min="0" value="<?php echo htmlspecialchars($e_exp); ?>" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="doctorSchedule">Schedule (e.g., Mon-Fri 9AM-5PM)</label>
-                    <input type="text" id="doctorSchedule" name="doctorSchedule" required>
+                    <input type="text" id="doctorSchedule" name="doctorSchedule" value="<?php echo htmlspecialchars($e_sch); ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="doctorAvailability">Availability</label>
                     <select id="doctorAvailability" name="doctorAvailability" required>
-                        <option value="available">Available</option>
-                        <option value="unavailable">Unavailable</option>
-                        <option value="on-leave">On Leave</option>
+                        <option value="available" <?php echo $e_avail === 'available' ? 'selected' : ''; ?>>Available</option>
+                        <option value="unavailable" <?php echo $e_avail === 'unavailable' ? 'selected' : ''; ?>>Unavailable</option>
+                        <option value="on-leave" <?php echo $e_avail === 'on-leave' ? 'selected' : ''; ?>>On Leave</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Add Doctor</button>
+                <div class="form-group">
+                    <label for="doctorPassword">Password <?php echo $e_id ? '(Leave blank to keep current)' : '(Required)'; ?></label>
+                    <input type="password" id="doctorPassword" name="doctorPassword" <?php echo $e_id ? '' : 'required'; ?>>
+                </div>
+                <button type="submit" class="btn btn-primary"><?php echo $e_id ? 'Update Doctor' : 'Add Doctor'; ?></button>
             </form>
             </div>
         </div>
@@ -266,7 +331,15 @@ $doctors = $stmt->fetchAll();
     </div>
 
     <footer>
-        <p>© 2025 HealthyLife. All rights reserved.</p>
+        <p>© 2026 HealthyLife. All rights reserved.</p>
     </footer>
+
+    <script>
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.getElementById('nav-links').classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
+

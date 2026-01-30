@@ -1,8 +1,8 @@
 <?php
-$host = 'localhost';
-$db   = 'healthylife_db';
-$user = 'root';
-$pass = '';
+$host = 'sql208.infinityfree.com';
+$db   = 'if0_41002427_healthylife_db';
+$user = 'if0_41002427';
+$pass = 'l8DqSgad16Z3';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

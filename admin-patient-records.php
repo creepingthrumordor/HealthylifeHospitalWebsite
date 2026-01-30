@@ -72,7 +72,15 @@ try {
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <ul class="nav-links">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Healthylife" style="height: 40px; vertical-align: middle; margin-right: 8px;">Healthylife
+            </a>
+            <button class="menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="nav-links">
                 <li><a href="admin-dashboard.php">Dashboard</a></li>
                 <li><a href="admin-doctor-management.php">Doctors</a></li>
                 <li><a href="admin-staff-directory.php">Staff</a></li>
@@ -80,7 +88,6 @@ try {
                 <li><a href="admin-patient-records.php">Patients</a></li>
                 <li><a href="logout.php">Logout</a></li>
             </ul>
-            <a href="index.html" class="logo"><img src="logo.png" alt="Healthylife" style="height: 40px; vertical-align: middle; margin-right: 8px;">Healthylife</a>
         </div>
     </nav>
 
@@ -166,7 +173,15 @@ try {
     </div>
 
     <footer>
-        <p>© 2025 HealthyLife. All rights reserved.</p>
+        <p>© 2026 HealthyLife. All rights reserved.</p>
     </footer>
+
+    <script>
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.getElementById('nav-links').classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
+
