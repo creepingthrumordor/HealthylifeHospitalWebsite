@@ -1,4 +1,3 @@
-/* Modern Hospital Website Styles */
 * {
     margin: 0;
     padding: 0;
@@ -6,16 +5,11 @@
 }
 
 :root {
-    /* Theme: Amber / Yellow / Chartreuse */
     --primary-color: #f59e0b;
-    /* Amber 500 */
     --primary-dark: #d97706;
-    /* Amber 600 */
     --secondary-color: #84cc16;
-    /* Lime 500 (Chartreuse) */
     --danger-color: #ef4444;
     --warning-color: #fcd34d;
-    /* Amber 300 */
     --text-dark: #1f2937;
     --text-light: #6b7280;
     --bg-light: #f9fafb;
@@ -35,7 +29,6 @@ body {
     flex-direction: column;
 }
 
-/* Navigation */
 .navbar {
     background: var(--bg-white);
     box-shadow: var(--shadow);
@@ -65,7 +58,6 @@ body {
     transition: all 0.3s ease-in-out;
 }
 
-/* Hamburger to X animation */
 .menu-toggle.active span:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
 }
@@ -91,7 +83,6 @@ body {
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--primary-dark);
-    /* Darker for better visibility */
     text-decoration: none;
 }
 
@@ -112,7 +103,6 @@ body {
     color: var(--primary-color);
 }
 
-/* Container */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -126,7 +116,6 @@ body {
     }
 }
 
-/* Grids */
 .grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -153,7 +142,6 @@ body {
     }
 }
 
-/* Auth Pages */
 .auth-container {
     max-width: 500px;
     margin: 4rem auto;
@@ -172,12 +160,9 @@ body {
     }
 }
 
-/* Hero Section */
 .hero {
-    /* Gradient: Amber -> Yellow -> Chartreuse */
     background: linear-gradient(135deg, #f59e0b 0%, #facc15 50%, #84cc16 100%);
     color: var(--text-dark);
-    /* Dark text on light/bright background */
     padding: 4rem 2rem;
     text-align: center;
     margin-bottom: 3rem;
@@ -195,7 +180,6 @@ body {
     font-weight: 500;
 }
 
-/* Cards */
 .card {
     background: var(--bg-white);
     border-radius: 8px;
@@ -215,7 +199,6 @@ body {
     font-size: 1.5rem;
 }
 
-/* Forms */
 .form-group {
     margin-bottom: 1.5rem;
 }
@@ -251,7 +234,6 @@ body {
     min-height: 120px;
 }
 
-/* Buttons */
 .btn {
     padding: 0.75rem 1.5rem;
     border: none;
@@ -268,7 +250,6 @@ body {
 .btn-primary {
     background: var(--primary-color);
     color: var(--text-dark);
-    /* Dark text for contrast on Amber */
     font-weight: 600;
 }
 
@@ -281,13 +262,11 @@ body {
 .btn-secondary {
     background: var(--secondary-color);
     color: white;
-    /* Lime 500 is dark enough for white, or border on edge. Let's use clean white. */
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .btn-secondary:hover {
     background: #65a30d;
-    /* Darker Lime */
 }
 
 .btn-danger {
@@ -310,7 +289,7 @@ body {
     color: var(--text-dark);
 }
 
-/* Tables */
+
 .table-container {
     overflow-x: auto;
 }
@@ -326,7 +305,6 @@ table {
 thead {
     background: var(--primary-color);
     color: var(--text-dark);
-    /* Contrast */
 }
 
 th,
@@ -340,7 +318,6 @@ tbody tr:hover {
     background: var(--bg-light);
 }
 
-/* Dashboard Grid */
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -369,7 +346,6 @@ tbody tr:hover {
     color: var(--text-dark);
 }
 
-/* Alert Messages */
 .alert {
     padding: 1rem;
     border-radius: 6px;
@@ -378,29 +354,22 @@ tbody tr:hover {
 
 .alert-success {
     background: #ecfccb;
-    /* Lime 100 */
     color: #3f6212;
-    /* Lime 800 */
     border-left: 4px solid var(--secondary-color);
 }
 
 .alert-info {
     background: #fef3c7;
-    /* Amber 100 */
     color: #92400e;
-    /* Amber 800 */
     border-left: 4px solid var(--primary-color);
 }
 
 .alert-warning {
     background: #fffbeb;
-    /* Amber 50 */
     color: #b45309;
-    /* Amber 700 */
     border-left: 4px solid var(--warning-color);
 }
 
-/* Utilities */
 .text-center {
     text-align: center;
 }
@@ -437,7 +406,6 @@ tbody tr:hover {
     gap: 1rem;
 }
 
-/* Gmail Button */
 .btn-gmail {
     background: #ffffff;
     color: #1f2937;
@@ -490,7 +458,6 @@ tbody tr:hover {
     margin-left: 0.5rem;
 }
 
-/* Footer */
 footer {
     background: var(--text-dark);
     color: white;
@@ -504,7 +471,6 @@ footer p {
     color: rgba(255, 255, 255, 0.9);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .navbar {
         padding: 0 1rem;
@@ -540,7 +506,6 @@ footer p {
     .nav-links.active {
         display: flex !important;
         max-height: 500px;
-        /* Large enough to fit any menu */
         padding: 1rem 0 !important;
     }
 
@@ -564,7 +529,6 @@ footer p {
         display: flex;
     }
 
-    /* Hero Section */
     .hero {
         padding: 2.5rem 1rem;
         margin-bottom: 1.5rem;
@@ -578,7 +542,6 @@ footer p {
         font-size: 1rem;
     }
 
-    /* Card Adjustments */
     .card {
         padding: 1rem;
         margin-bottom: 1rem;
@@ -598,7 +561,6 @@ footer p {
         gap: 1rem;
     }
 
-    /* Table adjustments */
     .table-container {
         margin: 0 -1rem;
         width: calc(100% + 2rem);
@@ -612,7 +574,6 @@ footer p {
         white-space: nowrap;
     }
 
-    /* Stats cards compact on mobile */
     .stat-card {
         padding: 1rem;
     }
@@ -621,7 +582,6 @@ footer p {
         font-size: 1.5rem;
     }
 
-    /* Form spacing */
     .form-group {
         margin-bottom: 1rem;
     }
