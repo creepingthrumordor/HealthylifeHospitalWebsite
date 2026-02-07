@@ -13,7 +13,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 $staff_success = '';
 $staff_error   = '';
 
-// Initialize edit variables
 $e_id = '';
 $e_name = '';
 $e_email = '';
@@ -41,7 +40,6 @@ if (isset($_GET['editStaff'])) {
             $e_phone = $editStaff['phone'];
             $e_role = $editStaff['role_type'];
             $e_dept = $editStaff['department_name'];
-            // Join date isn't in staff table currently, but we'll leave it for now
         }
     } catch (Exception $e) {
         $staff_error = "Error fetching staff data: " . $e->getMessage();
